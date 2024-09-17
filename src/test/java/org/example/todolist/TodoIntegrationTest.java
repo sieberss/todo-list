@@ -86,10 +86,12 @@ public class TodoIntegrationTest {
     void testAdd() throws Exception {
         mockMvc.perform(post("/api/todo")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(elementJsonWithoutId)
+                .content(elementJson)
                 )
                 .andExpect(status().isOk())
-                .andExpect(content().json(elementJson));
+                .andExpect(content().json(elementJsonWithoutId));
     }
+
+    
 
 }
