@@ -1,9 +1,11 @@
 package org.example.todolist;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/todo")
@@ -33,7 +35,19 @@ public class TodoController {
     }
 
     @DeleteMapping("/{id}")
-    public boolean deleteTodo(@PathVariable String id){
-        return service.deleteTodoById(id);
+    public void deleteTodo(@PathVariable String id){
+        service.deleteTodoById(id);
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleNoSuchElementException(NoSuchElementException e){
+        return e.getMessage();
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleException(Exception e){
+        return e.getMessage();
     }
 }

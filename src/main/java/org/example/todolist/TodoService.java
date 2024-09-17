@@ -21,7 +21,7 @@ public class TodoService {
     }
 
     public TodoElement getTodoById(String id) {
-        return repository.findById(id).orElse(null);
+        return repository.findById(id).orElseThrow(()-> new NoSuchElementException("ID not found: " + id));
     }
 
     public TodoElement updateTodo(TodoElement submitted, String id) {
@@ -34,11 +34,10 @@ public class TodoService {
         return repository.save(submitted);
     }
 
-    public boolean deleteTodoById(String id) {
+    public void deleteTodoById(String id) {
         if (!repository.existsById(id)) {
-            return false;
+            throw new NoSuchElementException("ID not found: " + id);
         }
         repository.deleteById(id);
-        return true;
     }
 }
